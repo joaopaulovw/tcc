@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: ../
+      dockerfile: stack/node/Dockerfile
+    restart: always
+    command: npm run dev
+    ports:
+      - 3333:3000
+    volumes:
+      - ../:/usr/app
+    links:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    volumes:
+      - ./mongo/data:/data/db
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
